@@ -6,13 +6,16 @@ import pl.coderslab.utils.DbUtil;
 
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class UserDao {
     private static final String CREATE_USER_QUERY = "INSERT INTO users(username, email, password) VALUES (?, ?, ?);";
     private static final String READ_USER_QUERY = "select * from users where id = ?;";
     private static final String UPDATE_USER_QUERY = "update users set username = ?, email = ?, password = ? where id = ?;";
     private static final String DELETE_USER_QUERY = "delete from users where id = ?;";
+    private static final String FIND_ALL_QUERY = "select * from users;";
 
     public static String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
@@ -84,18 +87,17 @@ public class UserDao {
         }
     }
 
-    public static User[] findAll() {
-        String FIND_ALL_QUERY = "select * from users;";
-        User[] findAll = new User[0];
+    public static List<User> findAll() {
+        List<User> users = new ArrayList<>();
         try (Connection connection = DbUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_QUERY);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 User user = new User(rs.getInt("id"), rs.getString("username"),
                         rs.getString("email"), rs.getString("password"));
-                findAll = ArrayUtils.add(findAll, user);
+                users.add(user);
             }
-            return findAll;
+            return users;
         } catch (SQLException e) {
             e.printStackTrace();
         }

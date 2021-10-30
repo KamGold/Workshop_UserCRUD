@@ -24,7 +24,7 @@
         </tbody>
     </table>
     <div class="bg-secondary text-white py-1 text-center py-5" style="height: 500px">
-        <label><h4>Are u sure delete this user?</h4>
+        <label><h4>Are u sure to delete this user?</h4>
     </label>
         <form action="/user/delete" method="POST"><input type="hidden" name="id" value="${user.id}"/> <input
                 class="btn btn-danger px-3 fw-bold" type="submit" name="decision" value="Yes"> <input

@@ -7,20 +7,15 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet("/user/show")
-public class show extends HttpServlet {
+@WebServlet("/user/list")
+public class UserList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       try {
-           int id = Integer.parseInt(request.getParameter("id"));
-           User user = UserDao.read(id);
-           request.setAttribute("user", user);
-           getServletContext().getRequestDispatcher("/show.jsp").forward(request, response);
-       }catch (NumberFormatException e){
-           e.printStackTrace();
-       }
-        getServletContext().getRequestDispatcher("/show.jsp").forward(request, response);
+        java.util.List<User> users = UserDao.findAll();
+        request.setAttribute("Users", users);
+        getServletContext().getRequestDispatcher("/list.jsp").forward(request, response);
     }
 
     @Override
